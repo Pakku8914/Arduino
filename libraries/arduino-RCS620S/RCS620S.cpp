@@ -144,10 +144,10 @@ int RCS620S::rfOff(void)
     int ret;
     uint8_t response[RCS620S_MAX_RW_RESPONSE_LEN];
     uint16_t responseLen;
-
     /* RFConfiguration (RF field) */
     ret = rwCommand((const uint8_t*)"\xd4\x32\x01\x00", 4,
                     response, &responseLen);
+    // 失敗した場合の処理
     if (!ret || (responseLen != 2) ||
         (memcmp(response, "\xd5\x33", 2) != 0)) {
         return 0;
@@ -209,7 +209,6 @@ int RCS620S::rwCommand(
     uint8_t buf[9];
 
     flushSerial();
-
     uint8_t dcs = calcDCS(command, commandLen);
 
     /* transmit the command */
